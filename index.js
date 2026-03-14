@@ -32,7 +32,7 @@ async function getWeather(city) {
 try {
  
 
-    const API_KEY = "312f19c5ab835a8e96cd89f4b947bc7a"
+    const API_KEY = ""
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${API_KEY}`;
    
     errorMessage.textContent = "";
