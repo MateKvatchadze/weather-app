@@ -1,0 +1,33 @@
+p,
+h2 {
+  margin: 0;
+}
+
+#weatherResult {
+  width: 260px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  position: relative;
+}
+#cityName{
+ margin-bottom: 15px;
+
+}
+#weatherIcon {
+  width: 80px;
+  height: 80px;
+
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+#temperature {
+  font-size: 35px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+#description, #humidity, #windSpeed{
+  font-size: 14px;
+}
