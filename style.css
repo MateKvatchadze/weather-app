@@ -31,3 +31,30 @@ h2 {
 #description, #humidity, #windSpeed{
   font-size: 14px;
 }
+
+#hero {
+  position: relative;
+  height: 300px;
+  background-image: url("https://images.unsplash.com/photo-1501973801540-537f08ccae7b");
+  background-size: cover;
+  background-position: center;
+
+    display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.25);
+}
+
+#hero h2 {
+  position: relative;
+}
+#appTitle {
+  font-size: 56px;
+  color: white;
+  font-weight: 500;
+}
