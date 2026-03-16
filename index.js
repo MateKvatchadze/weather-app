@@ -70,7 +70,7 @@ if (lastCity) {
 
 async function getWeather(city) {
   try {
-    const API_KEY = "76e7356f564c35f1586db1fd5d236438";
+    const API_KEY = "";
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${API_KEY}`;
 
     errorMessage.textContent = "";
