@@ -4,7 +4,7 @@ h2 {
 }
 
 #weatherResult {
-  width: 260px;
+  width: 460px;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 12px;
@@ -34,7 +34,7 @@ h2 {
 
 #hero {
   position: relative;
-  height: 300px;
+  height: 800px;
   background-image: url("https://images.unsplash.com/photo-1501973801540-537f08ccae7b");
   background-size: cover;
   background-position: center;
@@ -42,14 +42,19 @@ h2 {
     display: flex;
   align-items: center;
   justify-content: center;
+  color: rgb(32, 33, 33);
 }
 #hero::before {
   content: "";
   position: absolute;
   inset: 0;
   background: rgba(0,0,0,0.25);
+  pointer-events: none;
 }
-
+#hero > * {
+  position: relative;
+  z-index: 1;
+}
 #hero h2 {
   position: relative;
 }
@@ -57,4 +62,25 @@ h2 {
   font-size: 56px;
   color: white;
   font-weight: 500;
+}
+
+#weatherByHour {
+  display: flex;
+  gap: 15px;
+}
+
+.hourCard {
+  width: 80px;
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.2);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hourCard img {
+  width: 40px;
+  background-color: rgb(190, 190, 201);
 }

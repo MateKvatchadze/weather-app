@@ -12,6 +12,7 @@ const weatherIcon = document.getElementById("weatherIcon");
 const humidity = document.getElementById("humidity");
 const windSpeed = document.getElementById("windSpeed");
 const weatherByHour = document.getElementById("weatherByHour");
+const weatherByDay = document.getElementById("weatherByDay");
 
 const days = [
   "Sunday",
@@ -60,12 +61,14 @@ form.addEventListener("submit", function (e) {
   }
   getWeather(city);
   getForecast(city);
+  getForecastDay(lastCity);
 });
 
 const lastCity = localStorage.getItem("lastCity");
 if (lastCity) {
   getWeather(lastCity);
   getForecast(lastCity);
+  getForecastDay(lastCity);
 }
 
 async function getWeather(city) {
@@ -109,17 +112,102 @@ async function getForecast(city) {
 
   const response = await fetch(url);
   const data = await response.json();
-
-  const Weather_byHours = data.list.slice(0, 5);
+  const Weather_byHours = data.list.slice(0, 6);
   weatherByHour.innerHTML = "";
+
   Weather_byHours.forEach(function (item) {
     const time = item.dt_txt.split(" ")[1].slice(0, 5);
     const temp = item.main.temp;
     const humidity = item.main.humidity;
-    const icon = item.weather[0].icon;
 
     const card = document.createElement("div");
-    card.textContent = time;
+    card.classList.add("hourCard");
+    const timeEl = document.createElement("p");
+    const iconEl = document.createElement("img");
+    const tempEl = document.createElement("p");
+    const humidityEl = document.createElement("p");
+    const iconCode = item.weather[0].icon;
+
+    timeEl.textContent = time;
+    iconEl.src = `https://openweathermap.org/img/wn/${iconCode}.png`;
+    tempEl.textContent = `${Math.round(temp)}°`;
+    humidityEl.textContent = `💧 ${humidity}%`;
+
+    const weatherMain = item.weather[0].main;
+
+    if (weatherMain === "Clear") {
+      hero.style.backgroundImage = "url(images/weather-clear.png)";
+    } else if (weatherMain === "Clouds") {
+      hero.style.backgroundImage = "url(images/weather-clouds.jpg)";
+    } else if (weatherMain === "Rain") {
+      hero.style.backgroundImage = "url(images/weather-rain.jpg)";
+      hero.style.backgroundPosition = "center 70%";
+    } else if (weatherMain === "Clouds") {
+      hero.style.backgroundImage = "url(images/weather-clouds.jpg)";
+    } else if (weatherMain === "Snow") {
+      hero.style.backgroundImage = "url(images/weather-snow.jpg)";
+      hero.style.backgroundPosition = "center 70%";
+    } else if (weatherMain === "Thunderstorm") {
+      hero.style.backgroundImage = "url(images/weather-thunderstorm.png)";
+      hero.style.backgroundPosition = "center 40%";
+    }
+    card.append(timeEl, iconEl, tempEl, humidityEl);
     weatherByHour.append(card);
   });
+}
+
+async function getForecastDay(city) {
+  const API_KEY = "";
+  const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${API_KEY}`;
+
+  const response = await fetch(url);
+  const data = await response.json();
+  const list = data.list;
+
+  const startIndex = list.findIndex(function (item) {
+    const time = item.dt_txt.split(" ")[1];
+    return time === "00:00:00";
+  });
+  let filteredList;
+  if (startIndex === 0) {
+    filteredList = list.slice(startIndex + 8);
+  } else {
+    filteredList = list.slice(startIndex);
+  }
+
+  const dailyList = filteredList.filter(function (item) {
+    const time = item.dt_txt.split(" ")[1];
+    return time === "15:00:00";
+  });
+
+  filteredList.forEach(function (item) {
+    const time = item.dt_txt;
+    const hours = time.split(" ")[1].slice(0, 5);
+    //const day = time.split(" ")[0].slice(5, 10);
+
+    const temp = Math.round(item.main.temp) + "°";
+
+    const humidity = "💧 " + item.main.humidity + "%";
+
+    const iconCode = item.weather[0].icon;
+
+    const dayDiv = document.createElement("div");
+    dayDiv.classList.add("dayDiv");
+
+    const timeEl = document.createElement("p");
+    timeEl.textContent = hours;
+
+    const iconEl = document.createElement("img");
+    iconEl.src = `https://openweathermap.org/img/wn/${iconCode}.png`;
+
+    const humidityEl = document.createElement("p");
+    humidityEl.textContent = humidity;
+
+    const tempEl = document.createElement("p");
+    tempEl.textContent = temp;
+
+    dayDiv.append(timeEl, iconEl, tempEl, humidityEl);
+    weatherByDay.append();
+  });
+  console.log(filteredList);
 }
