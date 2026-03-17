@@ -73,7 +73,7 @@ if (lastCity) {
 
 async function getWeather(city) {
   try {
-    const API_KEY = "";
+    const API_KEY = "76e7356f564c35f1586db1fd5d236438";
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${API_KEY}`;
 
     errorMessage.textContent = "";
@@ -107,7 +107,7 @@ async function getWeather(city) {
 }
 
 async function getForecast(city) {
-  const API_KEY = "";
+  const API_KEY = "76e7356f564c35f1586db1fd5d236438";
   const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${API_KEY}`;
 
   const response = await fetch(url);
@@ -157,7 +157,7 @@ async function getForecast(city) {
 }
 
 async function getForecastDay(city) {
-  const API_KEY = "";
+  const API_KEY = "76e7356f564c35f1586db1fd5d236438";
   const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${API_KEY}`;
 
   const response = await fetch(url);
