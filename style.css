@@ -84,3 +84,18 @@ h2 {
   width: 40px;
   background-color: rgb(190, 190, 201);
 }
+
+.dayDiv{
+  width: 64.17px;
+  margin-top: 5px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 10px;
+  
+   display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.dayDiv img{
+  width: 40px;
+   background-color: rgb(190, 190, 201);
+}

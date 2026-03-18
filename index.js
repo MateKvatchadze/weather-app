@@ -61,7 +61,7 @@ form.addEventListener("submit", function (e) {
   }
   getWeather(city);
   getForecast(city);
-  getForecastDay(lastCity);
+  getForecastDay(city);
 });
 
 const lastCity = localStorage.getItem("lastCity");
@@ -88,7 +88,7 @@ async function getWeather(city) {
 
     const iconCode = data.weather[0].icon;
     weatherIcon.src = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
-    humidity.textContent = "humidity: " + data.main.humidity;
+    humidity.textContent = "humidity: 💧" + data.main.humidity + "%";
     windSpeed.textContent = "wind speed: " + data.wind.speed;
     cityName.textContent = data.name;
     temperature.textContent = data.main.temp + "°C";
@@ -126,6 +126,7 @@ async function getForecast(city) {
     const iconEl = document.createElement("img");
     const tempEl = document.createElement("p");
     const humidityEl = document.createElement("p");
+    humidityEl.classList.add("humidity");
     const iconCode = item.weather[0].icon;
 
     timeEl.textContent = time;
@@ -164,6 +165,8 @@ async function getForecastDay(city) {
   const data = await response.json();
   const list = data.list;
 
+  weatherByDay.innerHTML = "";
+
   const startIndex = list.findIndex(function (item) {
     const time = item.dt_txt.split(" ")[1];
     return time === "00:00:00";
@@ -180,10 +183,17 @@ async function getForecastDay(city) {
     return time === "15:00:00";
   });
 
-  filteredList.forEach(function (item) {
+  const nightList = filteredList.filter(function (item) {
+    const time = item.dt_txt.split(" ")[1];
+    return time === "21:00:00";
+  });
+
+  dailyList.forEach(function (item, index) {
+    const nightItem = nightList[index];
+    const nightTemp = Math.round(nightItem.main.temp) + "°";
+
     const time = item.dt_txt;
     const hours = time.split(" ")[1].slice(0, 5);
-    //const day = time.split(" ")[0].slice(5, 10);
 
     const temp = Math.round(item.main.temp) + "°";
 
@@ -194,20 +204,23 @@ async function getForecastDay(city) {
     const dayDiv = document.createElement("div");
     dayDiv.classList.add("dayDiv");
 
-    const timeEl = document.createElement("p");
-    timeEl.textContent = hours;
-
     const iconEl = document.createElement("img");
+    iconEl.classList.add();
     iconEl.src = `https://openweathermap.org/img/wn/${iconCode}.png`;
 
     const humidityEl = document.createElement("p");
     humidityEl.textContent = humidity;
 
     const tempEl = document.createElement("p");
-    tempEl.textContent = temp;
+    tempEl.textContent = `${temp}/${nightTemp}`;
 
-    dayDiv.append(timeEl, iconEl, tempEl, humidityEl);
-    weatherByDay.append();
+    const weekDay = "mon";
+    const weekdayEl = document.createElement("p");
+    weekdayEl.classList.add("weekday");
+    weekdayEl.textContent = weekDay;
+
+    dayDiv.append(weekdayEl, iconEl, tempEl, humidityEl);
+    weatherByDay.append(dayDiv);
   });
   console.log(filteredList);
 }
