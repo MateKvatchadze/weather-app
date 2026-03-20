@@ -4,7 +4,7 @@ h2 {
 }
 
 #weatherResult {
-  width: 460px;
+  width: 500px;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 12px;
@@ -86,16 +86,67 @@ h2 {
 }
 
 .dayDiv{
-  width: 64.17px;
+  width: 400px;
   margin-top: 5px;
   background: rgba(255,255,255,0.2);
   border-radius: 10px;
   
    display: flex;
-  flex-direction: column;
   align-items: center;
+  gap: 20px;
+  
+  width: 98%;
+  padding: 12px 10px;
 }
 .dayDiv img{
   width: 40px;
    background-color: rgb(190, 190, 201);
 }
+.firstDiv{
+   display: flex;
+  align-items: center;
+  width: 110px;
+}
+.tempDiv {
+  width: 90px;
+  display: flex;
+  align-items: center;
+   justify-content: flex-start;
+}
+.secondDiv{
+   display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 180px;
+}
+.thirdDiv{
+   display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 80px;
+}
+
+
+.dayDiv:hover{
+  cursor: pointer;
+}
+
+.humidity{
+    display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.drop{
+  line-height: 1;
+  transform: translateY(1px);
+}
+ .secondDiv{
+  display: flex;
+  align-items: center;
+ }
+
+ .weekDay{
+  font-weight: 600;
+  min-width: 110px ;
+  margin: 10px;
+ }

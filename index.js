@@ -14,29 +14,8 @@ const windSpeed = document.getElementById("windSpeed");
 const weatherByHour = document.getElementById("weatherByHour");
 const weatherByDay = document.getElementById("weatherByDay");
 
-const days = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-];
-const months = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
+const days = [ "Sunday", "Monday", "Tuesday",  "Wednesday", "Thursday",  "Friday", "Saturday",];
+const months = [ "January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November","December",];
 
 const date = document.getElementById("date");
 const now = new Date();
@@ -132,7 +111,7 @@ async function getForecast(city) {
     timeEl.textContent = time;
     iconEl.src = `https://openweathermap.org/img/wn/${iconCode}.png`;
     tempEl.textContent = `${Math.round(temp)}°`;
-    humidityEl.textContent = `💧 ${humidity}%`;
+    humidityEl.innerHTML = `<span class="drop">💧</span><span>${humidity}%</span>`;
 
     const weatherMain = item.weather[0].main;
 
@@ -185,15 +164,17 @@ async function getForecastDay(city) {
 
   const nightList = filteredList.filter(function (item) {
     const time = item.dt_txt.split(" ")[1];
-    return time === "21:00:00";
+    return time === "03:00:00";
   });
 
-  dailyList.forEach(function (item, index) {
+  dailyList.slice(0, 4).forEach(function (item, index) {
     const nightItem = nightList[index];
     const nightTemp = Math.round(nightItem.main.temp) + "°";
 
-    const time = item.dt_txt;
-    const hours = time.split(" ")[1].slice(0, 5);
+    const date = new Date(item.dt_txt);
+    const days = ["Sunday", "Monday", "Tuesday",  "Wednesday", "Thursday",  "Friday", "Saturday",];
+
+    const dayName = days[date.getDay()]
 
     const temp = Math.round(item.main.temp) + "°";
 
@@ -202,24 +183,38 @@ async function getForecastDay(city) {
     const iconCode = item.weather[0].icon;
 
     const dayDiv = document.createElement("div");
-    dayDiv.classList.add("dayDiv");
+          dayDiv.classList.add("dayDiv");
 
     const iconEl = document.createElement("img");
-    iconEl.classList.add();
-    iconEl.src = `https://openweathermap.org/img/wn/${iconCode}.png`;
+          iconEl.src = `https://openweathermap.org/img/wn/${iconCode}.png`;
 
-    const humidityEl = document.createElement("p");
-    humidityEl.textContent = humidity;
+    const descriptionEl = document.createElement("span");
+          descriptionEl.textContent = item.weather[0].description;
+      const secondDiv = document.createElement("div");
+            secondDiv.append(iconEl, descriptionEl)
+            secondDiv.classList.add("secondDiv")
 
-    const tempEl = document.createElement("p");
-    tempEl.textContent = `${temp}/${nightTemp}`;
+    
+    const humidityEl = document.createElement("span");
+          humidityEl.textContent = humidity;
+    const thirdDiv = document.createElement("div");
+          thirdDiv.classList.add("thirdDiv");
+          thirdDiv.append(humidityEl);
 
-    const weekDay = "mon";
-    const weekdayEl = document.createElement("p");
-    weekdayEl.classList.add("weekday");
-    weekdayEl.textContent = weekDay;
+    const tempEl = document.createElement("span");
+          tempEl.textContent = `${temp}/${nightTemp}`;
+    const tempDiv = document.createElement("div");
+          tempDiv.classList.add("tempDiv");
+          tempDiv.append(tempEl);
 
-    dayDiv.append(weekdayEl, iconEl, tempEl, humidityEl);
+      const weekdayEl = document.createElement("span");
+            weekdayEl.classList.add("weekDay");
+            weekdayEl.textContent = dayName;
+      const firstDiv = document.createElement("div");
+            firstDiv.classList.add("firstDiv");
+    firstDiv.append(weekdayEl);
+
+    dayDiv.append(firstDiv, tempDiv, secondDiv, thirdDiv);
     weatherByDay.append(dayDiv);
   });
   console.log(filteredList);
