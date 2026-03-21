@@ -85,6 +85,7 @@ async function getWeather(city) {
   }
 }
 
+
 async function getForecast(city) {
   const API_KEY = "76e7356f564c35f1586db1fd5d236438";
   const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${API_KEY}`;
@@ -136,6 +137,7 @@ async function getForecast(city) {
   });
 }
 
+
 async function getForecastDay(city) {
   const API_KEY = "76e7356f564c35f1586db1fd5d236438";
   const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${API_KEY}`;
@@ -167,10 +169,15 @@ async function getForecastDay(city) {
     return time === "03:00:00";
   });
 
+
+  let openedDetails = null;
+
   dailyList.slice(0, 4).forEach(function (item, index) {
+  
     const nightItem = nightList[index];
     const nightTemp = Math.round(nightItem.main.temp) + "°";
 
+  
     const date = new Date(item.dt_txt);
     const days = ["Sunday", "Monday", "Tuesday",  "Wednesday", "Thursday",  "Friday", "Saturday",];
 
@@ -184,6 +191,13 @@ async function getForecastDay(city) {
 
     const dayDiv = document.createElement("div");
           dayDiv.classList.add("dayDiv");
+    const detailsDiv  = document.createElement("div");
+          detailsDiv .classList.add("detailsDiv");
+
+    const wrapper = document.createElement("div");
+          wrapper.classList.add("dayWrapper");
+         
+
 
     const iconEl = document.createElement("img");
           iconEl.src = `https://openweathermap.org/img/wn/${iconCode}.png`;
@@ -214,8 +228,47 @@ async function getForecastDay(city) {
             firstDiv.classList.add("firstDiv");
     firstDiv.append(weekdayEl);
 
+     const newDayDate = item.dt_txt.split(" ")[0];
+     const dayData = filteredList.filter(function(el){
+     const elDate = el.dt_txt.split(" ")[0];
+     return elDate === newDayDate;
+   })
+
+
+    dayDiv.addEventListener("click", function(){
+      if (detailsDiv.style.display === "block") {
+         detailsDiv.style.display = "none";
+         openedDetails = null;
+         return;
+      } 
+      
+      if (openedDetails && openedDetails !== detailsDiv) {
+        openedDetails.style.display = "none";
+      }
+
+       detailsDiv.innerHTML = "";
+    
+          const dayData = filteredList.filter(function(el){
+            const elDate = el.dt_txt.split(" ")[0];
+            return elDate === newDayDate;
+          });
+          
+   dayData.forEach(function(info){
+    const time = info.dt_txt.split(" ")[1].slice(0, 5);
+
+    const el = document.createElement("div");
+          el.textContent = time;
+
+    detailsDiv.append(el);
+    });
+     detailsDiv.style.display = "block"
+      openedDetails = detailsDiv;
+     });
+
+
     dayDiv.append(firstDiv, tempDiv, secondDiv, thirdDiv);
-    weatherByDay.append(dayDiv);
+     wrapper.append(dayDiv, detailsDiv);
+    weatherByDay.append(wrapper);
   });
-  console.log(filteredList);
+  console.log(dailyList);
 }

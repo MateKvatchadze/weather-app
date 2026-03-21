@@ -150,3 +150,6 @@ h2 {
   min-width: 110px ;
   margin: 10px;
  }
+ .detailsDiv{
+  display: none;
+ }
