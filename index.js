@@ -138,6 +138,7 @@ async function getForecast(city) {
 }
 
 
+
 async function getForecastDay(city) {
   const API_KEY = "76e7356f564c35f1586db1fd5d236438";
   const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${API_KEY}`;
@@ -229,14 +230,10 @@ async function getForecastDay(city) {
     firstDiv.append(weekdayEl);
 
      const newDayDate = item.dt_txt.split(" ")[0];
-     const dayData = filteredList.filter(function(el){
-     const elDate = el.dt_txt.split(" ")[0];
-     return elDate === newDayDate;
-   })
 
 
-    dayDiv.addEventListener("click", function(){
-      if (detailsDiv.style.display === "block") {
+  dayDiv.addEventListener("click", function(){
+      if (detailsDiv.style.display === "flex") {
          detailsDiv.style.display = "none";
          openedDetails = null;
          return;
@@ -246,28 +243,43 @@ async function getForecastDay(city) {
         openedDetails.style.display = "none";
       }
 
-       detailsDiv.innerHTML = "";
+      detailsDiv.innerHTML = "";
     
-          const dayData = filteredList.filter(function(el){
+      const dayData = filteredList.filter(function(el){
             const elDate = el.dt_txt.split(" ")[0];
             return elDate === newDayDate;
-          });
+      });
+      console.log(dayData)
           
-   dayData.forEach(function(info){
-    const time = info.dt_txt.split(" ")[1].slice(0, 5);
+   dayData.forEach(function(item){
+          const time = item.dt_txt.split(" ")[1].slice(0, 5);
+          const temp = item.main.temp;
+          const humidity = item.main.humidity;
 
-    const el = document.createElement("div");
-          el.textContent = time;
+          const card = document.createElement("div");
+          card.classList.add("weatherByHoursForDays");
+          const timeEl = document.createElement("p");
+          const iconEl = document.createElement("img");
+          const tempEl = document.createElement("p");
+          const humidityEl = document.createElement("p");
+          humidityEl.classList.add("humidity");
+          const iconCode = item.weather[0].icon;
 
-    detailsDiv.append(el);
-    });
-     detailsDiv.style.display = "block"
+          timeEl.textContent = time;
+          iconEl.src = `https://openweathermap.org/img/wn/${iconCode}.png`;
+          tempEl.textContent = `${Math.round(temp)}°`;
+          humidityEl.innerHTML = `<span class="drop">💧</span><span>${humidity}%</span>`;
+
+          card.append(timeEl, iconEl, tempEl, humidityEl);
+          detailsDiv.append(card);
+      });
+     detailsDiv.style.display = "flex"
       openedDetails = detailsDiv;
-     });
+  });
 
 
     dayDiv.append(firstDiv, tempDiv, secondDiv, thirdDiv);
-     wrapper.append(dayDiv, detailsDiv);
+    wrapper.append(dayDiv, detailsDiv);
     weatherByDay.append(wrapper);
   });
   console.log(dailyList);
